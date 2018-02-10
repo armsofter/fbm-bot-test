@@ -1,0 +1,18 @@
+{
+    "development": {
+      "username": "postgres",
+      "password": 1234,
+      "database": "bot_db",
+      "host": "127.0.0.1",
+      "port": 5432,
+      "dialect": "postgres"
+    },
+    "test": {
+      "username": "waiyaki",
+      "password": null,
+      "database": "todos-test",
+      "host": "127.0.0.1",
+      "port": 5432,
+      "dialect": "postgres"
+    }
+  }
