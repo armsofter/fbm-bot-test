@@ -12,6 +12,9 @@ var Buttons = sequelize.define('buttons', {
     },
     updatedAt: {
         type: DataTypes.DATE
+    },
+    message: {
+        type: DataTypes.STRING
     }
   });
   return Buttons;
