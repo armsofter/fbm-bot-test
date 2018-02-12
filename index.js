@@ -22,6 +22,34 @@ facebookModule.init({
     SERVER_URL: env.SERVER_URL
 });
 
+app.use( (req, res, next) =>{
+    // if (req.body.entry[0].changes[0].value.item === 'like') {
+    //     req.body.entry[0].changes[0]
+    // }else {
+    //     console.log( " : REQ START : ", req.body.entry[0].changes[0].value," : VALUE : ", " : REQ END : ");
+    // }
+
+    if (req.body.entry[0].changes[0].value.item == 'comment') {
+        console.log(' : comment start : ');
+        console.log(req.body.entry[0].changes[0]);
+        console.log( " COMMENT END : ");
+    } else if(req.body.entry[0].changes[0].value.item == 'like'){
+        console.log("  : LIKE START : ");
+        console.log(req.body.entry[0].changes[0]);
+        console.log(" : LIKE END : ")
+    } else {
+        // console.log(' EVENT  : ');
+        // console.log(req.body.entry[0].changes[0]);
+        // console.log(': END EVENT  : ');
+
+    }
+
+    //console.log( " : REQ START : ", req.body.entry[0].changes[0]," : VALUE : ", " : REQ END : ");
+
+
+    // next();
+});
+
 app.use(bodyParser.json({verify: facebookModule.verifyRequestSignature}));
 
 app.get('/', facebookModule.authGET, function (req, res, next) {

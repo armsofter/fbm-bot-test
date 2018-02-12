@@ -20,24 +20,6 @@ exports.welcome = (dataList) => {
             facebookModule.messageListener(data, function () {
                 facebookModule.sendTextMessage(data.senderId, a.message);
                 if (a.type === 0) {
-                    /*MessagesController.message(a.next, (a) => {
-                        dataList.forEach(function (data) {
-                            facebookModule.messageListener(data, function () {
-                                facebookModule.sendTextMessage(data.senderId, a.message);
-                                if (a.type === 0) {
-                                    MessagesController.message(a.next, (a) => {
-                                        dataList.forEach(function (data) {
-                                            facebookModule.messageListener(data, function () {
-                                                facebookModule.sendTextMessage(data.senderId, a.message);
-                                            });
-                                        });
-                                    });
-                                } else {
-
-                                }
-                            });
-                        });
-                    });*/
                     messagesHelper.nextStep(a.next, a.type, dataList);
                 } else {
                     ButtonsController.getButton(a.next);

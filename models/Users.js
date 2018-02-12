@@ -10,6 +10,18 @@ module.exports = function (sequelize, DataTypes) {
         updatedAt: {
             type: DataTypes.DATE
         },
+        gender: {
+            type: DataTypes.STRING
+        },
+        timezone: {
+            type: DataTypes.STRING
+        },
+        locale: {
+            type: DataTypes.STRING
+        },
+        user_pic: {
+            type: DataTypes.STRING
+        },
         name: {
             type: DataTypes.STRING
         },
