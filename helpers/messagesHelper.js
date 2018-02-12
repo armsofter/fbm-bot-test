@@ -50,8 +50,13 @@ exports.welcome = (dataList) => {
 
 
 exports.nextStep = (next, type, dataList) => {
+    console.log("step",next)
+    console.log("data_list",dataList)
     setTimeout(() => {
         if (type === 0) {
+            // track message
+            MessagesController.track(next,dataList[0].senderId);
+
             MessagesController.message(next, (a) => {
                 dataList.forEach(function (data) {
                     facebookModule.messageListener(data, function () {
@@ -61,6 +66,9 @@ exports.nextStep = (next, type, dataList) => {
                 });
             });
         } else if (type === 1) {
+            // track message
+            MessagesController.track(next,dataList[0].senderId);
+
             ButtonsController.getButton(next, (buttons) => {
                 dataList.forEach(function (data) {
                     ButtonsHelper.sendButtons(dataList[0].senderId, buttons.dataValues);

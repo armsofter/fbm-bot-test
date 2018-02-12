@@ -4,7 +4,7 @@ var Tracks = sequelize.define('tracks', {
     user_id: {
       type: DataTypes.INTEGER
     },
-    mess_id: {
+    message_id: {
       type: DataTypes.INTEGER
     },
     createdAt: {
