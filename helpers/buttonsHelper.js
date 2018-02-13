@@ -11,16 +11,6 @@ exports.sendButtons = (userId, buttonsData) => {
         message: {
             text: buttonsData.message,
             quick_replies: [
-                // {
-                //     "content_type": "text",
-                //     "title": "Search",
-                //     "payload": "serch_payload_11>",
-                // },
-                // {
-                //     "content_type": "text",
-                //     "title": "Something Else",
-                //     "payload": "else_payload_222"
-                // }
             ]
         }
     };
@@ -28,7 +18,7 @@ exports.sendButtons = (userId, buttonsData) => {
         requestData.message.quick_replies.push({
             content_type:"text",
             title: button.name,
-            payload: "button_" + button.next
+            payload: "button_" + button.next + "_" + button.type
         });
     });
     request({

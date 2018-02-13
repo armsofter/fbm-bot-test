@@ -33,7 +33,7 @@ exports.welcome = (dataList) => {
 
 exports.nextStep = (next, type, dataList) => {
     console.log("step",next)
-    console.log("data_list",dataList)
+    console.log("data_list",dataList[0].message.quick_reply)
     setTimeout(() => {
         if (type === 0) {
             // track message
@@ -48,6 +48,7 @@ exports.nextStep = (next, type, dataList) => {
                 });
             });
         } else if (type === 1) {
+            console.log("Buttons :" ,next, type, dataList, ":Ednd buttons")
             // track message
             MessagesController.track(next,dataList[0].senderId);
 
