@@ -2,6 +2,7 @@
 const Models = require('../models/index');
 const Messages = Models.messages;
 const Tracks = Models.tracks;
+const Answers = Models.answers;
 // const Messages = require('../models/Messages');
 
 exports.welcomeMessage = (callback) => {
@@ -28,6 +29,16 @@ exports.track = (id, userId) => {
             return Tracks.create({user_id: userId, message_id: id, createat: new Date()});
         }
     })
+}
+
+exports.addAnswer = (answerId, userId) => {
+    Answers.create({answer: answerId, userid: userId, createdAt: new Date()}).then(answer => {
+        if(answer){
+            return true;
+        }else{
+            return false;
+        }
+    });
 }
 
 

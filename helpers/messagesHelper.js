@@ -20,7 +20,7 @@ exports.welcome = (dataList) => {
             facebookModule.messageListener(data, function () {
                 facebookModule.sendTextMessage(data.senderId, a.message);
                 if (a.type === 0) {
-                    messagesHelper.nextStep(a.next, a.type, dataList);
+                    messagesHelper.nextStep(a.next, a.type, 0, dataList);
                 } else {
                     ButtonsController.getButton(a.next);
                 }
@@ -31,19 +31,20 @@ exports.welcome = (dataList) => {
 };
 
 
-exports.nextStep = (next, type, dataList) => {
+exports.nextStep = (next, type, answerId, dataList) => {
     console.log("step",next)
     console.log("data_list",dataList[0].message.quick_reply)
     setTimeout(() => {
         if (type === 0) {
             // track message
             MessagesController.track(next,dataList[0].senderId);
+            MessagesController.addAnswer(answerId, dataList[0].senderId)
 
             MessagesController.message(next, (a) => {
                 dataList.forEach(function (data) {
                     facebookModule.messageListener(data, function () {
                         facebookModule.sendTextMessage(data.senderId, a.message);
-                        messagesHelper.nextStep(a.next, a.type, dataList);
+                        messagesHelper.nextStep(a.next, a.type, answerId, dataList);
                     });
                 });
             });
@@ -51,6 +52,7 @@ exports.nextStep = (next, type, dataList) => {
             console.log("Buttons :" ,next, type, dataList, ":Ednd buttons")
             // track message
             MessagesController.track(next,dataList[0].senderId);
+            MessagesController.addAnswer(answerId, dataList[0].senderId)
 
             ButtonsController.getButton(next, (buttons) => {
                 dataList.forEach(function (data) {

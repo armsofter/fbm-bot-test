@@ -18,7 +18,7 @@ exports.sendButtons = (userId, buttonsData) => {
         requestData.message.quick_replies.push({
             content_type:"text",
             title: button.name,
-            payload: "button_" + button.next + "_" + button.type
+            payload: "button_" + button.next + "_" + button.type + "_" + button.ID
         });
     });
     request({

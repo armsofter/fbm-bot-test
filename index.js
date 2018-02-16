@@ -74,7 +74,8 @@ app.post('/', facebookModule.parsePOST, function (req, res) {
         console.log(" PAYLOAD : ", dataList[0].message.quick_reply);
         let next = dataList[0].message.quick_reply.payload.split('_')[1];
         let type = dataList[0].message.quick_reply.payload.split('_')[2];
-        MessagesHelper.nextStep(next, parseInt(type), dataList)
+        let answerId = dataList[0].message.quick_reply.payload.split('_')[3];
+        MessagesHelper.nextStep(next, parseInt(type), parseInt(answerId), dataList)
     } else {
         console.log(req, " NOT MESSAGE WEB HOOK ");
     }
