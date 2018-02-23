@@ -4,8 +4,9 @@ const app = express();
 const facebookModule = require('fb-bot');
 const Sequelize = require('sequelize');
 const models = require('./models');
-var fs = require('fs');
-var env = JSON.parse(fs.readFileSync('env.json', 'utf8'));
+let fs = require('fs');
+let env = JSON.parse(fs.readFileSync('env.json', 'utf8'));
+const request = require('request');
 const MessagesController = require('./controllers/messages');
 const UsersConteoller = require('./controllers/users');
 const ButtonsController = require('./controllers/buttons');
@@ -21,6 +22,38 @@ facebookModule.init({
     PAGE_ACCESS_TOKEN: env.PAGE_ACCESS_TOKEN,
     SERVER_URL: env.SERVER_URL
 });
+
+// Get Started button
+// function setupGetStartedButton(res){
+//     let messageData = {
+//         "get_started":[
+//             {
+//                 "payload":"GetStarted"
+//             }
+//         ]
+//     };
+
+    // Start the request
+//     request({
+//             url: 'https://graph.facebook.com/v2.6/me/messenger_profile?access_token='+ PAGE_ACCESS_TOKEN,
+//             method: 'POST',
+//             headers: {'Content-Type': 'application/json'},
+//             form: messageData
+//         },
+//         function (error, response, body) {
+//             if (!error && response.statusCode === 200) {
+//                 // Print out the response body
+//                 res.send(body);
+//
+//             } else {
+//                 // TODO: Handle errors
+//                 res.send(body);
+//             }
+//         });
+// }
+
+
+//End of Get Started Button
 
 // app.use( (req, res, next) =>{
 //     console.log('req header:', req.body.entry[0].changes);
@@ -58,10 +91,13 @@ app.get('/', facebookModule.authGET, function (req, res, next) {
 });
 
 app.post('/', facebookModule.parsePOST, function (req, res) {
-    console.log("req body :", req.body)
-    var dataList = req.afterParse;
-    console.log(" DATA LIST : ", dataList[0].message.quick_reply, dataList[0]);
-    if (typeof dataList !== 'undefined' && typeof dataList[0].message.quick_reply === 'undefined') {
+    console.log("req body :", req.body);
+    let dataList = req.afterParse;
+    console.log(" DATA LIST : ", dataList[0]);
+    if (dataList[0].messageType === 'Postback'){
+        UsersConteoller.saveUser(dataList[0].senderId);
+        MessagesHelper.welcome(dataList);
+    }else if (dataList[0].messageType === '') {
         if (dataList[0].message.text === 'hi'
             || dataList[0].message.text === 'HI'
             || dataList[0].message.text === 'Hi'
@@ -70,7 +106,7 @@ app.post('/', facebookModule.parsePOST, function (req, res) {
             UsersConteoller.saveUser(dataList[0].senderId);
             MessagesHelper.welcome(dataList);
         }
-    } else if (typeof dataList[0].message.quick_reply !== 'undefined') {
+    } else if (dataList[0].messageType === 'QuickReply') {
         console.log(" PAYLOAD : ", dataList[0].message.quick_reply);
         let next = dataList[0].message.quick_reply.payload.split('_')[1];
         let type = dataList[0].message.quick_reply.payload.split('_')[2];

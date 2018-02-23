@@ -32,8 +32,6 @@ exports.welcome = (dataList) => {
 
 
 exports.nextStep = (next, type, answerId, dataList) => {
-    console.log("step",next)
-    console.log("data_list",dataList[0].message.quick_reply)
     setTimeout(() => {
         if (type === 0) {
             // track message
