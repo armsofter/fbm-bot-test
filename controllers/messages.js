@@ -20,13 +20,14 @@ exports.message = (id, callback) => {
 
 
 exports.track = (id, userId) => {
-    Tracks.findOne({ user_id : userId} )
+    Tracks.findOne({where: { user_id : userId}} )
     .then(function(obj) {
+        console.log(" TRACK OBJECT : ", obj, " : TRACK : ");
         if(obj) { // update
             return obj.update({message_id: id, updateAt: new Date()});
         }
         else { // insert
-            return Tracks.create({user_id: userId, message_id: id, createat: new Date()});
+            return Tracks.create({user_id: userId, message_id: id, createdAt: new Date()});
         }
     })
 }
@@ -40,6 +41,7 @@ exports.addAnswer = (answerId, userId) => {
         }
     });
 }
+
 
 
 

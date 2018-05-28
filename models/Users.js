@@ -27,6 +27,9 @@ module.exports = function (sequelize, DataTypes) {
         },
         lastName: {
             type: DataTypes.STRING
+        },
+        j_id: {
+            type: DataTypes.INTEGER
         }
     });
     return Users;
