@@ -22,7 +22,11 @@ exports.welcome = (dataList) => {
                 if (a.type === 0) {
                     messagesHelper.nextStep(a.next, a.type, 0, dataList);
                 } else {
-                    ButtonsController.getButton(a.next);
+                    ButtonsController.getButton(a.next, (buttons) => {
+                        dataList.forEach(function (data) {
+                            ButtonsHelper.sendButtons(dataList[0].senderId, buttons.dataValues);
+                        });
+                    });
                 }
             });
         });
