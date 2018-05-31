@@ -74,7 +74,7 @@ app.get('/getOneButton/:id', (req, res) => {
     ButtonsController.getOneButton(req, res);
 });
 
-app.get('/deleteMessage:/id', (req, res) => {
+app.get('/deleteMessage/:id', (req, res) => {
     MessagesController.deleteMessage(req, res);
 });
 

@@ -69,9 +69,12 @@ exports.updateMessage = (req, res) => {
 }
 
 exports.deleteMessage = (req, res) => {
-    Messages.delete({id:req.params.id}).then(data => {
-       res.json(data);
+    Messages.destroy({
+        where: {
+            id: req.params.id
+        }
+    }).then(data => {
+        res.json(data);
     });
 };
-
 

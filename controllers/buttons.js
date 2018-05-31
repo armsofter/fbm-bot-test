@@ -4,7 +4,7 @@ const ButtonsHelper = require('../helpers/buttonsHelper');
 
 exports.getButton = (id, callback) => {
     Buttons.findById(id).then(buttons => {
-       callback(buttons)
+        callback(buttons)
     });
 };
 
@@ -36,7 +36,11 @@ exports.getOneButton = (req, res) => {
 };
 
 exports.deleteButton = (req, res) => {
-    Buttons.delete({id:req.params.id}).then(data => {
+    Buttons.destroy({
+        where: {
+            id: req.params.id
+        }
+    }).then(data => {
         res.json(data);
     });
 };
