@@ -1,10 +1,10 @@
 var Sequalize = require('sequelize');
 var sequalize = new Sequalize(
-    'prod2',
-    'myjobsdbadmin',
-    'pass1432', {
+    '',
+    '',
+    '', {
         logging: true,
-        host: 'myjobsprod.c6x3vbsiiokl.ap-southeast-1.rds.amazonaws.com',
+        host: '',
         dialect: 'postgres',
         port: '5432',
         define: {
