@@ -50,12 +50,16 @@ app.post('/', facebookModule.parsePOST, function (req, res) {
             || dataList[0].message.text === 'hello') {
             UsersConteoller.saveUser(dataList[0].senderId);
             MessagesHelper.welcome(dataList);
+        } else {
+            if (dataList[0].message.text) {
+                MessagesHelper.inputForID(dataList[0]);
+            }
         }
     } else if (dataList[0].messageType === 'QuickReply') {
         let next = dataList[0].message.quick_reply.payload.split('_')[1];
         let type = dataList[0].message.quick_reply.payload.split('_')[2];
         let answerId = dataList[0].message.quick_reply.payload.split('_')[3];
-        MessagesHelper.nextStep(next, parseInt(type), parseInt(answerId), dataList)
+        MessagesHelper.nextStep(next, parseInt(type), parseInt(answerId), dataList, false)
     } else {
         console.log(" NOT MESSAGE WEB HOOK ");
     }

@@ -2,6 +2,8 @@ const MessagesController = require('../controllers/messages');
 const UsersConteoller = require('../controllers/users');
 const Models = require('../models/index');
 const Tracks = Models.tracks;
+const Messages = Models.messages;
+const Inputs = Models.inputs;
 const ButtonsController = require('../controllers/buttons');
 const facebookModule = require('fb-bot');
 const messagesHelper = require('./messagesHelper');
@@ -22,9 +24,12 @@ exports.welcome = (dataList) => {
     MessagesController.welcomeMessage((a) => {
         dataList.forEach(function (data) {
             facebookModule.messageListener(data, function () {
+                MessagesController.track(1, data.senderId);
                 facebookModule.sendTextMessage(data.senderId, a.message);
                 if (a.type === 0) {
-                    messagesHelper.nextStep(a.next, a.type, 0, dataList);
+                    setTimeout(() => {
+                        nextStep(a.next, a.type, 0, dataList, a.input);
+                    }, 2000);
                 } else {
                     ButtonsController.getButton(a.next, (buttons) => {
                         dataList.forEach(function (data) {
@@ -35,67 +40,57 @@ exports.welcome = (dataList) => {
             });
         });
     });
-
 };
 
-
-const nextStep = exports.nextStep = (next, type, answerId, dataList) => {
+const nextStep = exports.nextStep = (next, type, answerId, dataList, input) => {
     setTimeout(() => {
-
-        if (type === 0) {
-            if( next === '4'){
-                UsersConteoller.getUser(dataList[0].senderId).then( (user) => {
-                    console.log("USER ::: ", user, user.dataValues.j_id, answerId)
-                    MyjobsHelper.setCategory(user.dataValues.j_id, answerId)
-                })
-            }
-            // track message
+        if (input) {
             MessagesController.track(next, dataList[0].senderId);
-            MessagesController.addAnswer(answerId, dataList[0].senderId)
-
-            MessagesController.message(next, (a) => {
-                dataList.forEach(function (data) {
-                    facebookModule.messageListener(data, function () {
-                        facebookModule.sendTextMessage(data.senderId, a.message);
-                        messagesHelper.nextStep(a.next, a.type, answerId, dataList);
+        } else {
+            if (type === 0) {
+                // track message
+                MessagesController.track(next, dataList[0].senderId);
+                MessagesController.addAnswer(answerId, dataList[0].senderId);
+                MessagesController.message(next, (a) => {
+                    dataList.forEach(function (data) {
+                        facebookModule.messageListener(data, function () {
+                            facebookModule.sendTextMessage(data.senderId, a.message);
+                            nextStep(a.next, a.type, answerId, dataList, a.input);
+                        });
                     });
                 });
-            });
-        } else if (type === 1) {
-            // track message
-            MessagesController.track(next, dataList[0].senderId);
-            MessagesController.addAnswer(answerId, dataList[0].senderId)
-
-            ButtonsController.getButton(next, (buttons) => {
-                dataList.forEach(function (data) {
-                    ButtonsHelper.sendButtons(dataList[0].senderId, buttons.dataValues);
+            } else if (type === 1) {
+                MessagesController.track(next, dataList[0].senderId);
+                MessagesController.addAnswer(answerId, dataList[0].senderId);
+                ButtonsController.getButton(next, (buttons) => {
+                    dataList.forEach(function (data) {
+                        ButtonsHelper.sendButtons(dataList[0].senderId, buttons.dataValues);
+                    });
                 });
-            });
+            }
         }
-    }, 1000);
 
+    }, 1500);
 };
 
-
-exports.inputForID = (data) => {
+const inputForID = exports.inputForID = (data) => {
     if (data.senderId !== null) {
         Tracks.find({where: {user_id: data.senderId}}).then((track) => {
-            if (track.message_id == 8 || track.message_id == 12) {
-                if (validator.isEmail(String(data.message.text))) {
-                    MyjobsHelper.userDataByEmail(data.message.text, (count, j_id) => {
-                        console.log(" : STARAT S : ", count, " : USERS EMAIL : ", j_id);
-                        UsersConteoller.saveUserJobId(j_id, data.senderId);
-                        if (count < 3) {
-                            nextStep(10, 0, 8, [data]);
-                        } else {
-                            nextStep(11, 0, 8, [data]);
-                        }
-                    });
-
-                } else {
-                    nextStep(12, 0, 8, [data])
+            let messageId = Number(track.dataValues.message_id) - 1;
+            Messages.findById(messageId).then(message => {
+                console.log(" MESSAGE : ", message.dataValues, " : MESSAGE ");
+                if (message.dataValues.input) {
+                    Inputs.create({
+                        user: data.senderId,
+                        answer: data.message.text,
+                        question: message.dataValues.id
+                    }).then((res => {
+                        console.log(" RESULT : ", res.dataValues, " : RESULT ");
+                        nextStep(message.dataValues.next, message.dataValues.type, 0, [data], false);
+                    }))
                 }
-            }
+            });
+            console.log(" TRACK :  FROM USER ID : ", track.dataValues.message_id, " : TRACK USER ID : : ");
         })
     } else {
         console.log('sadsds');

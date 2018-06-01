@@ -1,13 +1,13 @@
 'use strict';
 module.exports = function (sequelize, DataTypes) {
-    var Messages = sequelize.define('messages', {
-        message: {
+    var Inputs = sequelize.define('inputs', {
+        user: {
             type: DataTypes.STRING
         },
-        next: {
-            type: DataTypes.INTEGER
+        answer: {
+            type: DataTypes.STRING
         },
-        type: {
+        question: {
             type: DataTypes.INTEGER
         },
         createdAt: {
@@ -15,13 +15,7 @@ module.exports = function (sequelize, DataTypes) {
         },
         updatedAt: {
             type: DataTypes.DATE
-        },
-        description: {
-            type: DataTypes.STRING
-        },
-        input: {
-            type: DataTypes.BOOLEAN
         }
     });
-    return Messages;
+    return Inputs;
 }

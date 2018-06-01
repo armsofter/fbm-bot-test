@@ -5,7 +5,7 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.INTEGER
         },
         userid: {
-            type: DataTypes.INTEGER
+            type: DataTypes.STRING
         },
         createdAt: {
             type: DataTypes.DATE

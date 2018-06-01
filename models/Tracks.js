@@ -2,7 +2,7 @@
 module.exports = function(sequelize, DataTypes) {
 var Tracks = sequelize.define('tracks', {
     user_id: {
-      type: DataTypes.INTEGER
+      type: DataTypes.STRING
     },
     message_id: {
       type: DataTypes.INTEGER

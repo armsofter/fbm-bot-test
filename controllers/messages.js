@@ -19,12 +19,17 @@ exports.message = (id, callback) => {
 
 
 exports.track = (id, userId) => {
-    Tracks.findOne({user_id: userId})
+    console.log(" ARGUMENTS : ", id, userId + '');
+    Tracks.find({user_id: String(userId)})
         .then(function (obj) {
-            if (obj) { // update
-                return obj.update({message_id: id, updateAt: new Date()});
+            if (obj) {
+                console.log('update error');
+                return obj.update({message_id: id, updateAt: new Date()}).then(data => {
+                    console.log('UPDATED TRACKING')
+                });
             }
             else { // insert
+                console.log('insert error');
                 return Tracks.create({user_id: userId, message_id: id, createat: new Date()});
             }
         })
