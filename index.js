@@ -106,4 +106,8 @@ app.post('/messages/add', (req, res) => {
     MessagesController.addQuestion(req, res);
 });
 
+app.get('/getFlow', (req, res) => {
+    MessagesController.getFlow(req, res);
+});
+
 app.listen(3000, () => console.log('Webhook server is listening, port 3000'));

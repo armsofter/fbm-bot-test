@@ -2,6 +2,7 @@ const Models = require('../models/index');
 const Messages = Models.messages;
 const Tracks = Models.tracks;
 const Answers = Models.answers;
+const Buttons = Models.buttons;
 // const Messages = require('../models/Messages');
 
 exports.welcomeMessage = (callback) => {
@@ -83,3 +84,10 @@ exports.deleteMessage = (req, res) => {
     });
 };
 
+
+exports.getFlow = (req, res) => {
+    Models.sequelize.query('SELECT messages.id, messages.message,messages.type, messages.description, messages.input, message_next.id AS message_next_id, button_next.id AS button_next_id, button_next.buttons AS buttons_next_button FROM messages left join messages AS message_next on message_next.id = messages.next  left join buttons AS button_next on button_next.id = messages.next ORDER BY messages.next').then(data => {
+        console.log(" DATA : ", data, " : DARA ");
+        res.json(data[0]);
+    });
+}

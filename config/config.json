@@ -1,18 +1,19 @@
 {
-    "development": {
-      "username": "postgres",
-      "password": "tikotigran#890137",
-      "database": "bot_db",
-      "host": "127.0.0.1",
-      "port": 5433,
-      "dialect": "postgres"
-    },
-    "test": {
-      "username": "waiyaki",
-      "password": null,
-      "database": "todos-test",
-      "host": "127.0.0.1",
-      "port": 5432,
-      "dialect": "postgres"
-    }
+  "development": {
+    "username": "postgres",
+    "password": "tikotigran#890137",
+    "database": "bot_db",
+    "host": "127.0.0.1",
+    "port": 5433,
+    "dialect": "postgres",
+    "log": false
+  },
+  "test": {
+    "username": "waiyaki",
+    "password": null,
+    "database": "todos-test",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "dialect": "postgres"
   }
+}
